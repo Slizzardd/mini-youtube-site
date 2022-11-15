@@ -10,4 +10,8 @@ public interface UserRepository extends BaseRepository<User> {
     User findByLogin(String login);
 
     User findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByLogin(String login);
 }

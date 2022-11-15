@@ -52,6 +52,7 @@ public class User extends BaseEntity {
         this.enabled = false;
         this.status = Status.ACTIVE;
         this.whoIsSubscribers = new HashSet<>();
+        this.role = Role.USER;
     }
 
     public Role getRole() {
