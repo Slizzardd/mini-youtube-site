@@ -1,6 +1,7 @@
 package ua.com.alevel.facade.impl;
 
 import org.springframework.stereotype.Service;
+import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.facade.UserFacade;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.service.UserService;
@@ -16,7 +17,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void create(UserRequestDto userRequestDto) {
+    public void create(UserRequestDto userRequestDto) throws EntityExistException {
         User user = new User();
         user.setFirstName(userRequestDto.getFirstName());
         user.setLastName(userRequestDto.getLastName());

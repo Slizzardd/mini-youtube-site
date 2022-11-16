@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user) throws EntityExistException{
         if (userRepository.existsByEmail(user.getEmail())
                 || userRepository.existsByLogin(user.getLogin())) {
             throw new EntityExistException("this personal is exist");

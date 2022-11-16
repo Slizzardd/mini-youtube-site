@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MyTube</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../styles/util.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('../images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form class="login100-form validate-form" action="sendler">
+					<span class="login100-form-title p-b-49">
+						Register
+					</span>
+
+                <div class="maybe_error">
+                    <h1>A user with this email or login already exists, use another one</h1>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                    <span class="label-input100">Login</span>
+                    <input class="input100" type="text" name="login" placeholder="Type your login">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                    <span class="label-input100">Email</span>
+                    <input class="input100" type="text" name="email" placeholder="Type your email">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                    <span class="label-input100">First Name</span>
+                    <input class="input100" type="text" name="firstName" placeholder="Type your first name">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                    <span class="label-input100">Last Name</span>
+                    <input class="input100" type="text" name="lastName" placeholder="Type your last name">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                    <span class="label-input100">Phone number</span>
+                    <input class="input100" type="text" name="phoneNumber" placeholder="Type your phone number">
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <span class="label-input100">Password</span>
+                    <input class="input100" type="password" name="password" placeholder="Type your password">
+                </div>
+
+                <div class="text-right p-t-8 p-b-31">
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" type="button" onclick="addUser()">
+                            Sign up
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-col-c p-t-155">
+                    <a href="/auth/auth" class="txt2">
+                        Login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+        function addUser() {
+            let data = JSON.stringify({
+                email: $('input[name=email]').val(),
+                login: $('input[name=login]').val(),
+                password: $('input[name=password]').val(),
+                firstName: $('input[name=firstName]').val(),
+                lastName: $('input[name=lastName]').val(),
+                phoneNumber: $('input[name=phoneNumber]').val(),
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '../../add_user',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: data,
+                success: function (XHR) {
+                    if(XHR === 'done'){
+                        window.location.href = '/auth/login';
+                    }else{
+                        window.scrollTo(0, 0)
+                        $('.maybe_error').addClass('error');
+                        $('.maybe_error').removeClass('maybe_error');
+                    }
+                },
+            });
+        }
+</script>
+<script src="../scripts/main.js"></script>
+<script src="../scripts/jquery.min.js"></script>
+<script src="../scripts/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</html>
