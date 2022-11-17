@@ -20,7 +20,7 @@
 					</span>
 
                 <div class="maybe_error">
-                    <h1>A user with this email or login already exists, use another one</h1>
+                    <h1 id="error100"></h1>
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
@@ -77,33 +77,38 @@
 
 </body>
 <script>
-        function addUser() {
-            let data = JSON.stringify({
-                email: $('input[name=email]').val(),
-                login: $('input[name=login]').val(),
-                password: $('input[name=password]').val(),
-                firstName: $('input[name=firstName]').val(),
-                lastName: $('input[name=lastName]').val(),
-                phoneNumber: $('input[name=phoneNumber]').val(),
-            });
+    function showError(error){
+        window.scrollTo(0, 0);
+        document.getElementById('error100').innerHTML = error;
+    }
 
-            $.ajax({
-                type: 'POST',
-                url: '../../add_user',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: data,
-                success: function (XHR) {
-                    if(XHR === 'done'){
-                        window.location.href = '/auth/login';
-                    }else{
-                        window.scrollTo(0, 0)
-                        $('.maybe_error').addClass('error');
-                        $('.maybe_error').removeClass('maybe_error');
-                    }
-                },
-            });
-        }
+    function addUser() {
+        let data = JSON.stringify({
+            email: $('input[name=email]').val(),
+            login: $('input[name=login]').val(),
+            password: $('input[name=password]').val(),
+            firstName: $('input[name=firstName]').val(),
+            lastName: $('input[name=lastName]').val(),
+            phoneNumber: $('input[name=phoneNumber]').val(),
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '../../add_user',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: data,
+            success: function (XHR) {
+                if (XHR === 'done') {
+                    window.location.href = '/auth/login';
+                } else {
+                    $('.maybe_error').addClass('error');
+                    $('.maybe_error').removeClass('maybe_error');
+                    showError(XHR);
+                }
+            },
+        });
+    }
 </script>
 <script src="../scripts/main.js"></script>
 <script src="../scripts/jquery.min.js"></script>

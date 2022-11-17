@@ -1,5 +1,6 @@
 package ua.com.alevel.facade.impl;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.facade.UserFacade;
@@ -19,17 +20,30 @@ public class UserFacadeImpl implements UserFacade {
     @Override
     public void create(UserRequestDto userRequestDto) throws EntityExistException {
         User user = new User();
-        user.setFirstName(userRequestDto.getFirstName());
-        user.setLastName(userRequestDto.getLastName());
-        user.setEmail(userRequestDto.getEmail());
-        user.setLogin(userRequestDto.getLogin());
-        user.setPhoneNumber(userRequestDto.getPhoneNumber());
-        user.setPassword(userRequestDto.getPassword());
+        reqToUser(userRequestDto, user);
         userService.create(user);
+    }
+
+    @Override
+    public void update(Long id, UserRequestDto userRequestDto) {
+        User user = userService.findById(id).orElse(null);
+        if(ObjectUtils.isNotEmpty(user)){
+            reqToUser(userRequestDto, user);
+            userService.update(user);
+        }
     }
 
     @Override
     public void delete(Long id) {
 
+    }
+
+    private void reqToUser(UserRequestDto userRequestDto, User user){
+        user.setLogin(userRequestDto.getLogin());
+        user.setEmail(userRequestDto.getEmail());
+        user.setFirstName(userRequestDto.getFirstName());
+        user.setLastName(userRequestDto.getLastName());
+        user.setPhoneNumber(userRequestDto.getPhoneNumber());
+        user.setPassword(userRequestDto.getPassword());
     }
 }

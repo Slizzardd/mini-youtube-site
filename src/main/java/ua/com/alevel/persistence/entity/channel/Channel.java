@@ -27,6 +27,9 @@ public class Channel extends BaseEntity {
     @Column(nullable = true)
     private String avatarData;
 
+    @Column(nullable = false, unique = true)
+    private String login;
+
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -74,12 +77,44 @@ public class Channel extends BaseEntity {
         this.likesComments = new HashSet<>();
     }
 
-    public Set<Comment> getComments() {
-        return comments;
+    public User getUser() {
+        return user;
     }
 
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAvatarData() {
+        return avatarData;
+    }
+
+    public void setAvatarData(String avatarData) {
+        this.avatarData = avatarData;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Set<User> getSubscribers() {
@@ -88,6 +123,14 @@ public class Channel extends BaseEntity {
 
     public void setSubscribers(Set<User> subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public Set<Video> getVideos() {

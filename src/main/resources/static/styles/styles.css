@@ -428,12 +428,7 @@ iframe {
     }
 }
 
-.maybe_error{
-    display: none;
-}
 
 .error{
-    text-align: center;
-    color: #c80000;
-    background: #000000;
+    display: none;
 }

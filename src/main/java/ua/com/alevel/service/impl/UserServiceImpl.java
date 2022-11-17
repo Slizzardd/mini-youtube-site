@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User entity) {
-
+    public void update(User user) {
+        crudRepositoryHelper.update(userRepository, user);
     }
 
     @Override
@@ -49,7 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail);
     }
 
     @Override

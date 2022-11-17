@@ -49,7 +49,7 @@ public class User extends BaseEntity {
 
     public User() {
         super();
-        this.enabled = false;
+        this.enabled = true;
         this.status = Status.ACTIVE;
         this.whoIsSubscribers = new HashSet<>();
         this.role = Role.USER;

@@ -5,7 +5,5 @@ import ua.com.alevel.web.dto.response.ResponseDto;
 
 public interface BaseFacade <REQ extends RequestDto, RES extends ResponseDto>{
 
-    void create(REQ req);
 
-    void delete(Long id);
 }
