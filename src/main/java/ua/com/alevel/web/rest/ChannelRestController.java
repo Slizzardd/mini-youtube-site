@@ -12,6 +12,8 @@ import ua.com.alevel.exception.EntityNotFoundException;
 import ua.com.alevel.facade.ChannelFacade;
 import ua.com.alevel.web.dto.request.ChannelRequestDto;
 
+import java.nio.file.FileAlreadyExistsException;
+
 @RestController
 public class ChannelRestController {
 
@@ -30,7 +32,20 @@ public class ChannelRestController {
                 return "done";
             }catch (EntityNotFoundException | EntityExistException e){
                 return e.toString();
+            } catch (FileAlreadyExistsException e) {
+                return "XUITrA KArKAYrTO";
             }
+        }else{
+            return "XUITA KAKAYTO";
+        }
+    }
+
+    @PostMapping(value = "/updateChannel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String update(@ModelAttribute ChannelRequestDto channelRequestDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            channelFacade.update(channelRequestDto, authentication.getName());
+            return "done";
         }else{
             return "XUITA KAKAYTO";
         }

@@ -26,7 +26,7 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public void update(Long id, UserRequestDto userRequestDto) {
-        User user = userService.findById(id).orElse(null);
+        User user = userService.findById(id);
         if(ObjectUtils.isNotEmpty(user)){
             reqToUser(userRequestDto, user);
             userService.update(user);

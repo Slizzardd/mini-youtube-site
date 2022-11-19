@@ -25,7 +25,7 @@ public class Channel extends BaseEntity {
     private String description;
 
     @Column(nullable = true)
-    private String avatarData;
+    private String pathToAvatar;
 
     @Column(nullable = false, unique = true)
     private String login;
@@ -69,7 +69,7 @@ public class Channel extends BaseEntity {
     public Channel() {
         super();
         // @TODO Insert a link to a basic avatar
-        this.avatarData = "";
+        this.pathToAvatar = "";
         this.subscribers = new HashSet<>();
         this.comments = new HashSet<>();
         this.videos = new HashSet<>();
@@ -101,12 +101,12 @@ public class Channel extends BaseEntity {
         this.description = description;
     }
 
-    public String getAvatarData() {
-        return avatarData;
+    public String getPathToAvatar() {
+        return pathToAvatar;
     }
 
-    public void setAvatarData(String avatarData) {
-        this.avatarData = avatarData;
+    public void setPathToAvatar(String pathToAvatar) {
+        this.pathToAvatar = pathToAvatar;
     }
 
     public String getLogin() {

@@ -8,6 +8,7 @@ import ua.com.alevel.persistence.entity.channel.Channel;
 import ua.com.alevel.persistence.repository.channel.ChannelRepository;
 import ua.com.alevel.service.ChannelService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void update(Channel entity) {
-
+    public void update(Channel channel) {
+        crudRepositoryHelper.update(channelRepository, channel);
     }
 
     @Override
@@ -37,8 +38,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Optional<Channel> findById(Long id) {
-        return Optional.empty();
+    public Channel findById(Long id) {
+        return channelRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -47,7 +48,16 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Optional<Channel> findByLogin(String login) {
-        return channelRepository.findByLogin(login);
+    public Channel findByLogin(String login) {
+        return channelRepository.findByLogin(login).orElse(null);
+    }
+
+    @Override
+    public Long getLastIndex() {
+        try{
+            return Objects.requireNonNull(channelRepository.findTopByOrderByIdDesc().orElse(null)).getId() + 1L;
+        }catch (NullPointerException e){
+            return 1L;
+        }
     }
 }

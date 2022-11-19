@@ -1,6 +1,7 @@
 package ua.com.alevel.facade.impl;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.exception.EntityNotFoundException;
@@ -9,8 +10,12 @@ import ua.com.alevel.persistence.entity.channel.Channel;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.service.ChannelService;
 import ua.com.alevel.service.UserService;
+import ua.com.alevel.util.AvatarRenderUtil;
 import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.response.ChannelResponseDto;
+
+import java.nio.file.FileAlreadyExistsException;
+import java.util.Objects;
 
 @Service
 public class ChannelFacadeImpl implements ChannelFacade {
@@ -24,17 +29,13 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void create(ChannelRequestDto channelRequestDto, String userEmail) {
-        User user = userService.findByEmail(userEmail).orElse(null);
+    public void create(ChannelRequestDto channelRequestDto, String userEmail) throws FileAlreadyExistsException {
+        User user = userService.findByEmail(userEmail);
         assert user != null;
         if (checkUser(user, channelRequestDto.getChannelLogin())) {
             Channel channel = new Channel();
-            channel.setName(channelRequestDto.getChannelName());
-            channel.setDescription(channelRequestDto.getDescription());
-            channel.setLogin(channelRequestDto.getChannelLogin());
 
-//          @TODO Create an ImageRenderUtil and make the avatar load
-            channel.setUser(user);
+            setMainChannelInformation(channel, channelRequestDto, user);
             channelService.create(channel);
 
 //          @TODO Figure out how to do it differently
@@ -49,8 +50,29 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
+    public void update(ChannelRequestDto channelRequestDto, String userEmail) {
+        Channel channel = channelService.findById(
+                userService.findByEmail(userEmail).getId());
+        if (ObjectUtils.isNotEmpty(channel)) {
+            setMainChannelInformation(channel, channelRequestDto, channel.getUser());
+            channelService.update(channel);
+        }
+    }
+
+    @Override
+    public ChannelResponseDto findByUser(String userEmail) {
+        return new ChannelResponseDto(Objects.requireNonNull(userService.findByEmail(userEmail)).getChannel());
+    }
+
+    @Override
+    public ChannelResponseDto findById(Long id) {
+        return new ChannelResponseDto(Objects.requireNonNull(channelService.findById(id)));
+    }
+
+
+    @Override
     public ChannelResponseDto findByLogin(String login) {
-        Channel channel = channelService.findByLogin(login).orElse(null);
+        Channel channel = channelService.findByLogin(login);
         if (ObjectUtils.isNotEmpty(channel)) {
             return new ChannelResponseDto(channel);
         } else {
@@ -71,6 +93,36 @@ public class ChannelFacadeImpl implements ChannelFacade {
             throw new EntityExistException("The channel with this login does not exist");
         } else {
             return false;
+        }
+    }
+
+    private void updateAvatar(ChannelRequestDto channelRequestDto, Channel channel){
+        if (ObjectUtils.isNotEmpty(channelRequestDto.getAvatar())) {
+            if (StringUtils.isEmpty(channel.getPathToAvatar())) {
+                channel.setPathToAvatar(AvatarRenderUtil.writeImageToFilesAndGetPath(
+                        channelRequestDto.getAvatar(),
+                        channelService.getLastIndex(),
+                        channel.getUser().getId()));
+            } else if (StringUtils.isNotEmpty(channel.getPathToAvatar())) {
+                AvatarRenderUtil.writeNewImageToFiles(
+                        channelRequestDto.getAvatar(),
+                        channel.getPathToAvatar());
+            }
+        }
+    }
+
+    private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user){
+        channel.setLogin(channelRequestDto.getChannelLogin());
+        channel.setDescription(channelRequestDto.getDescription());
+        channel.setName(channelRequestDto.getChannelName());
+        if(channel.getId() != null){
+            updateAvatar(channelRequestDto, channel);
+        }else{
+            channel.setPathToAvatar(AvatarRenderUtil.writeImageToFilesAndGetPath(
+                    channelRequestDto.getAvatar(),
+                    channelService.getLastIndex(),
+                    user.getId()));
+            channel.setUser(user);
         }
     }
 }

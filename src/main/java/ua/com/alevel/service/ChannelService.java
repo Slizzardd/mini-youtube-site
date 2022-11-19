@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface ChannelService extends BaseService<Channel>{
 
-    Optional<Channel> findByLogin(String login);
+    Channel findByLogin(String login);
+
+    Long getLastIndex();
 }

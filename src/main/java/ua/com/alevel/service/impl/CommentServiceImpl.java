@@ -1,13 +1,23 @@
 package ua.com.alevel.service.impl;
 
+import ua.com.alevel.persistence.crud.CrudRepositoryHelper;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.comment.Comment;
+import ua.com.alevel.persistence.repository.comment.CommentRepository;
 import ua.com.alevel.service.CommentService;
 
 import java.util.Optional;
 
 public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final CrudRepositoryHelper<Comment, CommentRepository> crudRepositoryHelper;
+
+    public CommentServiceImpl(CommentRepository commentRepository, CrudRepositoryHelper<Comment, CommentRepository> crudRepositoryHelper) {
+        this.commentRepository = commentRepository;
+        this.crudRepositoryHelper = crudRepositoryHelper;
+    }
 
     @Override
     public void create(Comment entity) {
@@ -25,8 +35,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> findById(Long id) {
-        return Optional.empty();
+    public Comment findById(Long id) {
+        return crudRepositoryHelper.findById(commentRepository, id).orElse(null);
     }
 
     @Override

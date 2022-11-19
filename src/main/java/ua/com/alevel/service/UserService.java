@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserService extends BaseService<User>{
 
-    Optional<User> findByEmail(String userEmail);
+    User findByEmail(String userEmail);
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ChannelRepository extends BaseRepository<Channel> {
 
     Optional<Channel> findByLogin(String login);
+
+    Optional<Channel> findTopByOrderByIdDesc();
 }
