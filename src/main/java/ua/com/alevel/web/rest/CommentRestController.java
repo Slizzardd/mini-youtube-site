@@ -6,24 +6,30 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.alevel.facade.VideoFacade;
+import ua.com.alevel.facade.CommentFacade;
+import ua.com.alevel.facade.UserFacade;
+import ua.com.alevel.web.dto.request.CommentRequestDto;
 import ua.com.alevel.web.dto.request.VideoRequestDto;
 
 @RestController
-public class VideoRestController {
+@RequestMapping("/")
+public class CommentRestController {
 
-    private final VideoFacade videoFacade;
+    private final CommentFacade commentFacade;
+    private final UserFacade userFacade;
+    public CommentRestController(CommentFacade commentFacade, UserFacade userFacade) {
+        this.commentFacade = commentFacade;
+        this.userFacade = userFacade;
 
-    public VideoRestController(VideoFacade videoFacade) {
-        this.videoFacade = videoFacade;
     }
 
-    @RequestMapping("/uploadVideo")
-    public String handleFileUpload(@RequestBody VideoRequestDto videoRequestDto) {
+    @RequestMapping("/createComment")
+    public String handleFileUpload(@RequestBody CommentRequestDto commentRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            videoRequestDto.setUserEmail(authentication.getName());
-            videoFacade.create(videoRequestDto);
+            commentRequestDto.setUserEmail(authentication.getName());
+            commentRequestDto.setIdVideo(1L);
+            commentFacade.create(commentRequestDto);
             return "done";
         } else {
             return "XUITA KAKAYTO";

@@ -33,17 +33,17 @@
 
                 <div class="wrap-input100 validate-input m-b-23" data-validate="Channel name is required">
                     <span class="label-input100">Channel name</span>
-                    <input class="input100" type="text" name="channelName" th:placeholder="${channel.getNameChannel()}">
+                    <input class="input100" type="text" name="channelName" th:value="${channel.getNameChannel()}">
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-23" data-validate="Channel login is required">
                     <span class="label-input100">Channel login</span>
-                    <input class="input100" type="text" name="channelLogin" th:placeholder="${channel.getLoginChannel()}">
+                    <input class="input100" type="text" name="channelLogin" th:value="${channel.getLoginChannel()}">
                 </div>
 
                 <div class="wrap-input100 validate-input m-b-23">
                     <span class="label-input100">Channel description</span>
-                    <input class="input100" type="text" name="description" th:placeholder="${channel.getDescriptionChannel()}">
+                    <input class="input100" type="text" name="description" th:value="${channel.getDescriptionChannel()}">
                 </div>
 
                 <div class="text-right p-t-8 p-b-31"></div>

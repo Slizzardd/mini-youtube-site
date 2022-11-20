@@ -1,5 +1,6 @@
 package ua.com.alevel.service.impl;
 
+import org.springframework.stereotype.Service;
 import ua.com.alevel.persistence.crud.CrudRepositoryHelper;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
@@ -9,6 +10,7 @@ import ua.com.alevel.service.CommentService;
 
 import java.util.Optional;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -20,8 +22,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void create(Comment entity) {
-
+    public void create(Comment comment) {
+        crudRepositoryHelper.create(commentRepository, comment);
     }
 
     @Override

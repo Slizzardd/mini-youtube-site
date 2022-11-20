@@ -6,19 +6,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.com.alevel.facade.VideoFacade;
 
 @Controller
-@RequestMapping("/video")
-public class VideoController {
+@RequestMapping("/comment")
+public class CommentController {
 
-    private final VideoFacade videoFacade;
-
-    public VideoController(VideoFacade videoFacade) {
-        this.videoFacade = videoFacade;
-    }
-
-    @RequestMapping("/uploadVideo")
+    @RequestMapping("/createComment")
     public String update(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
@@ -26,6 +19,6 @@ public class VideoController {
         }else{
             model.addAttribute("isLogin", false);
         }
-        return "/createVideo";
+        return "/createComment";
     }
 }

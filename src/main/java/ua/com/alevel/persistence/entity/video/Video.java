@@ -23,8 +23,10 @@ public class Video extends BaseEntity {
 
     private String description;
 
+    private String pathToVideo;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "channel_id", nullable = false)
     private Channel channel;
 
     @ManyToMany(mappedBy = "likes")
@@ -38,6 +40,14 @@ public class Video extends BaseEntity {
         super();
         this.whoIsLikes = new HashSet<>();
         this.comments = new HashSet<>();
+    }
+
+    public String getPathToVideo() {
+        return pathToVideo;
+    }
+
+    public void setPathToVideo(String pathToVideo) {
+        this.pathToVideo = pathToVideo;
     }
 
     public String getTitle() {
@@ -71,6 +81,22 @@ public class Video extends BaseEntity {
 
     public void setWhoIsLikes(Set<Channel> whoIsLikes) {
         this.whoIsLikes = whoIsLikes;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

@@ -10,8 +10,17 @@ public class ChannelRequestDto extends RequestDto{
     private MultipartFile avatar;
     private String channelLogin;
     private String description;
+    private String userEmail;
 
     public ChannelRequestDto() {
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public Long getId() {

@@ -1,5 +1,6 @@
 package ua.com.alevel.service.impl;
 
+import org.springframework.stereotype.Service;
 import ua.com.alevel.persistence.crud.CrudRepositoryHelper;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
@@ -9,6 +10,7 @@ import ua.com.alevel.service.VideoService;
 
 import java.util.Optional;
 
+@Service
 public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
     private final CrudRepositoryHelper <Video, VideoRepository> crudRepositoryHelper;
@@ -19,8 +21,8 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public void create(Video entity) {
-
+    public void create(Video video) {
+        crudRepositoryHelper.create(videoRepository, video);
     }
 
     @Override

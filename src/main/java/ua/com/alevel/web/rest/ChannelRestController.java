@@ -28,7 +28,8 @@ public class ChannelRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             try{
-                channelFacade.create(channelRequestDto, authentication.getName());
+                channelRequestDto.setUserEmail(authentication.getName());
+                channelFacade.create(channelRequestDto);
                 return "done";
             }catch (EntityNotFoundException | EntityExistException e){
                 return e.toString();
@@ -44,7 +45,8 @@ public class ChannelRestController {
     public String update(@ModelAttribute ChannelRequestDto channelRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            channelFacade.update(channelRequestDto, authentication.getName());
+            channelRequestDto.setUserEmail(channelRequestDto.getUserEmail());
+            channelFacade.update(channelRequestDto);
             return "done";
         }else{
             return "XUITA KAKAYTO";

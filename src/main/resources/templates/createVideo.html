@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MyTube</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../styles/util.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('../images/bg-01.jpg');">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form class="login100-form validate-form" action="sendler">
+					<span class="login100-form-title p-b-49">
+						Register
+					</span>
+
+                <div class="maybe_error">
+                    <h1 id="error100"></h1>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23">
+                    <span class="label-input100">descriptionVideo</span>
+                    <input class="input100" type="text" name="descriptionVideo" placeholder="Type your descriptionVideo">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23">
+                    <span class="label-input100">tagsVideo</span>
+                    <input class="input100" type="text" name="tagsVideo" placeholder="Type your tagsVideo">
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-23">
+                    <span class="label-input100">title</span>
+                    <input class="input100" type="text" name="title" placeholder="Type your title">
+                </div>
+
+                <div class="text-right p-t-8 p-b-31">
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" type="button" onclick="addUser()">
+                            Sign up
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-col-c p-t-155">
+                    <a href="/auth/auth" class="txt2">
+                        Login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    function showError(error){
+        window.scrollTo(0, 0);
+        document.getElementById('error100').innerHTML = error;
+    }
+
+    function addUser() {
+        let data = JSON.stringify({
+            descriptionVideo: $('input[name=descriptionVideo]').val(),
+            title: $('input[name=title]').val(),
+            tagsVideo: $('input[name=tagsVideo]').val(),
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '../../uploadVideo',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: data,
+            success: function (XHR) {
+                if (XHR === 'done') {
+                    window.location.href = '/';
+                } else {
+                    $('.maybe_error').addClass('error');
+                    $('.maybe_error').removeClass('maybe_error');
+                    showError(XHR);
+                }
+            },
+        });
+    }
+</script>
+<script src="../scripts/main.js"></script>
+<script src="../scripts/jquery.min.js"></script>
+<script src="../scripts/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</html>

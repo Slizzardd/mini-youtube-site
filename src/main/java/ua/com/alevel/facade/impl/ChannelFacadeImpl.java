@@ -29,8 +29,8 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void create(ChannelRequestDto channelRequestDto, String userEmail) throws FileAlreadyExistsException {
-        User user = userService.findByEmail(userEmail);
+    public void create(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException {
+        User user = userService.findByEmail(channelRequestDto.getUserEmail());
         assert user != null;
         if (checkUser(user, channelRequestDto.getChannelLogin())) {
             Channel channel = new Channel();
@@ -50,9 +50,9 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void update(ChannelRequestDto channelRequestDto, String userEmail) {
+    public void update(ChannelRequestDto channelRequestDto) {
         Channel channel = channelService.findById(
-                userService.findByEmail(userEmail).getId());
+                userService.findByEmail(channelRequestDto.getUserEmail()).getId());
         if (ObjectUtils.isNotEmpty(channel)) {
             setMainChannelInformation(channel, channelRequestDto, channel.getUser());
             channelService.update(channel);

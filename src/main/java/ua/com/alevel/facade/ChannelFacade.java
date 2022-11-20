@@ -7,11 +7,11 @@ import java.nio.file.FileAlreadyExistsException;
 
 public interface ChannelFacade extends BaseFacade<ChannelRequestDto, ChannelResponseDto> {
 
-    void create(ChannelRequestDto channelRequestDto, String userEmail) throws FileAlreadyExistsException;
+    void create(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException;
 
     void delete(Long id);
 
-    void update(ChannelRequestDto channelRequestDto, String userEmail);
+    void update(ChannelRequestDto channelRequestDto);
 
     ChannelResponseDto findByUser(String userEmail);
 
