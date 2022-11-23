@@ -25,6 +25,8 @@ public class Video extends BaseEntity {
 
     private String pathToVideo;
 
+    private String pathToAvatar;
+
     @ManyToOne
     @JoinColumn(name = "channel_id", nullable = false)
     private Channel channel;
@@ -40,6 +42,14 @@ public class Video extends BaseEntity {
         super();
         this.whoIsLikes = new HashSet<>();
         this.comments = new HashSet<>();
+    }
+
+    public String getPathToAvatar() {
+        return pathToAvatar;
+    }
+
+    public void setPathToAvatar(String pathToAvatar) {
+        this.pathToAvatar = pathToAvatar;
     }
 
     public String getPathToVideo() {

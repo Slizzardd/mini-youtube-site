@@ -8,6 +8,7 @@ import ua.com.alevel.persistence.entity.video.Video;
 import ua.com.alevel.persistence.repository.video.VideoRepository;
 import ua.com.alevel.service.VideoService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -43,5 +44,14 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public DataTableResponse<Video> findAll(DataTableRequest request) {
         return null;
+    }
+
+    @Override
+    public Long getLastIndex() {
+        try{
+            return Objects.requireNonNull(videoRepository.findTopByOrderByIdDesc().orElse(null)).getId() + 1L;
+        }catch (NullPointerException e){
+            return 1L;
+        }
     }
 }

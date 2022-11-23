@@ -20,7 +20,7 @@ public final class AvatarRenderUtil {
         throw new IllegalStateException("Utility class.");
     }
 
-    public static String writeImageToFilesAndGetPath(MultipartFile multipartFile, Long userId, Long newAvatarId) {
+    public static String writeImageToFilesAndGetPath(MultipartFile multipartFile, Long userId, Long lastIndexOfDB) {
         try {
             BufferedImage image = ImageIO.read(multipartFile.getInputStream());
             if (checkSizeImage(image)) {
@@ -30,7 +30,7 @@ public final class AvatarRenderUtil {
                         imageLength, imageLength);
                 String pathToFolder = generatePathToFolder(userId);
                 if (new File(pathToFolder).mkdir()) {
-                    String pathToAvatar = generatePathToAvatar(pathToFolder, newAvatarId, multipartFile);
+                    String pathToAvatar = generatePathToAvatar(pathToFolder, lastIndexOfDB, multipartFile);
                     String formatName = getImageFormat(pathToAvatar);
 
                     ImageIO.write(image, formatName, new File(pathToAvatar));
@@ -79,8 +79,9 @@ public final class AvatarRenderUtil {
 
 
     private static String generatePathToFolder(Long userId) {
-        return StaticMainProperties.PATH_PROJECT + "/src/main/resources/static/imageChannel/" + "user" + userId;
+        return StaticMainProperties.PATH_PROJECT + "/src/main/resources/static/avatarChannel/" + "user" + userId;
     }
+
     private static String generatePathToAvatar(String pathToFolder, Long newAvatarId, MultipartFile multipartFile) {
         return pathToFolder + "/" + "avatar" + newAvatarId + getExtensionFile(Objects.requireNonNull(multipartFile.getOriginalFilename()));
     }

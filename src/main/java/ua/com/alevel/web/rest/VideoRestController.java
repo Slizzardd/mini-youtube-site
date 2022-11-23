@@ -3,6 +3,7 @@ package ua.com.alevel.web.rest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class VideoRestController {
     }
 
     @RequestMapping("/uploadVideo")
-    public String handleFileUpload(@RequestBody VideoRequestDto videoRequestDto) {
+    public String handleFileUpload(@ModelAttribute VideoRequestDto videoRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             videoRequestDto.setUserEmail(authentication.getName());

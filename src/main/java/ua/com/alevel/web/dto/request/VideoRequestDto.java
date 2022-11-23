@@ -1,13 +1,35 @@
 package ua.com.alevel.web.dto.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.swing.plaf.multi.MultiButtonUI;
+
 public class VideoRequestDto extends RequestDto{
 
     private String descriptionVideo;
     private String tagsVideo;
     private String title;
     private String userEmail;
+    private MultipartFile video;
+    private MultipartFile avatarForVideo;
 
     public VideoRequestDto() {
+    }
+
+    public MultipartFile getVideo() {
+        return video;
+    }
+
+    public void setVideo(MultipartFile video) {
+        this.video = video;
+    }
+
+    public MultipartFile getAvatarForVideo() {
+        return avatarForVideo;
+    }
+
+    public void setAvatarForVideo(MultipartFile avatarForVideo) {
+        this.avatarForVideo = avatarForVideo;
     }
 
     public String getUserEmail() {
