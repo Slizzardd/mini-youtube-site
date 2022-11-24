@@ -162,12 +162,12 @@ public class Channel extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Channel channel = (Channel) o;
-        return Objects.equals(subscribers, channel.subscribers) && Objects.equals(videos, channel.videos) && Objects.equals(likes, channel.likes);
+        return Objects.equals(login, channel.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscribers, videos, likes);
+        return Objects.hash(login);
     }
 
     @Override

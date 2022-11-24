@@ -1,6 +1,9 @@
 package ua.com.alevel.web.rest;
 
 import org.json.JSONObject;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +27,17 @@ public class UserRestController {
             return JSONObject.quote("done");
         } catch (EntityExistException e) {
             return JSONObject.quote("this personal is exist");
+        }
+    }
+
+    @PostMapping(value = "/deleteUser")
+    public String delete() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            userFacade.delete(1L, authentication.getName());
+            return "done";
+        } else {
+            return "XUITA KAKAYTO";
         }
     }
 }

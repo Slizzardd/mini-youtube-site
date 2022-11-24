@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface ChannelService extends BaseService<Channel>{
 
+    void delete(Long id);
+
     Channel findByLogin(String login);
 
     Long getLastIndex();

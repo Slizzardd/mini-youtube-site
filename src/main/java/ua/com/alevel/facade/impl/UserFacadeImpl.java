@@ -2,11 +2,14 @@ package ua.com.alevel.facade.impl;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
+import ua.com.alevel.exception.AccessException;
 import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.facade.UserFacade;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.service.UserService;
 import ua.com.alevel.web.dto.request.UserRequestDto;
+
+import java.util.Objects;
 
 @Service
 public class UserFacadeImpl implements UserFacade {
@@ -34,8 +37,13 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(Long userId, String userEmail) {
+        User user = userService.findByEmail(userEmail);
+        if(Objects.equals(user.getId(), userId)){
+            userService.delete(user);
+        } else {
+            throw new AccessException("You cannot delete an account that is not yours");
+        }
     }
 
     private void reqToUser(UserRequestDto userRequestDto, User user){

@@ -8,5 +8,5 @@ public final class StaticMainProperties {
 
     public static final String PATH_PROJECT = "C:/D/youtube-site";
 
-    public static final String PATH_TO_BASE_AVATAR = "error";
+    public static final String PATH_TO_BASE_AVATAR = "ererererer";
 }

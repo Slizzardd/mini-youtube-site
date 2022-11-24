@@ -7,12 +7,25 @@
 </head>
 <body>
 <a href="/auth/login" th:class="${isLogin} ? 'login' : 'not_login'" >Login</a>
+<br>
 <a href="/channel" th:class="${isLogin} ? 'login' : 'not_login'" >channel</a>
+<br>
 <a href="/channel/updateChannel" th:class="${isLogin} ? 'login' : 'not_login'" >update channel</a>
+<br>
 <a href="/video/uploadVideo" th:class="${isLogin} ? 'login' : 'not_login'" >video</a>
+<br>
 <a href="/comment/createComment" th:class="${isLogin} ? 'login' : 'not_login'" >comment</a>
+<br>
 <form action="/auth/logout" method="POST">
     <button class="button" type="submit">Logout</button>
+</form>
+
+<form action="/deleteUser" method="POST">
+    <button class="button" type="submit">DeleteUser</button>
+</form>
+
+<form action="/deleteChannel" method="POST">
+    <button class="button" type="submit">DeleteChannel</button>
 </form>
 </body>
 </html>

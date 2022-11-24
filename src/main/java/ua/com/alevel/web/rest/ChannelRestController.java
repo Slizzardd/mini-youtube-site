@@ -24,31 +24,44 @@ public class ChannelRestController {
     }
 
     @PostMapping(value = "/createChannel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String create(@ModelAttribute ChannelRequestDto channelRequestDto){
+    public String create(@ModelAttribute ChannelRequestDto channelRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            try{
+            try {
                 channelRequestDto.setUserEmail(authentication.getName());
                 channelFacade.create(channelRequestDto);
                 return "done";
-            }catch (EntityNotFoundException | EntityExistException e){
+            } catch (EntityNotFoundException | EntityExistException | FileAlreadyExistsException e) {
                 return e.toString();
-            } catch (FileAlreadyExistsException e) {
-                return "XUITrA KArKAYrTO";
             }
-        }else{
+        } else {
             return "XUITA KAKAYTO";
         }
     }
 
     @PostMapping(value = "/updateChannel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String update(@ModelAttribute ChannelRequestDto channelRequestDto){
+    public String update(@ModelAttribute ChannelRequestDto channelRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            channelRequestDto.setUserEmail(channelRequestDto.getUserEmail());
-            channelFacade.update(channelRequestDto);
+            channelRequestDto.setUserEmail(authentication.getName());
+            try {
+                channelFacade.update(channelRequestDto);
+                return "done";
+            } catch (FileAlreadyExistsException e) {
+                return e.toString();
+            }
+        } else {
+            return "XUITA KAKAYTO";
+        }
+    }
+
+    @PostMapping(value = "/deleteChannel")
+    public String delete() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+//            channelFacade.delete(, authentication.getName());
             return "done";
-        }else{
+        } else {
             return "XUITA KAKAYTO";
         }
     }

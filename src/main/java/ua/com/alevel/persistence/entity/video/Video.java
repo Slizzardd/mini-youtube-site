@@ -114,12 +114,12 @@ public class Video extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Video video = (Video) o;
-        return Objects.equals(title, video.title) && Objects.equals(tags, video.tags) && Objects.equals(description, video.description) && Objects.equals(channel, video.channel) && Objects.equals(whoIsLikes, video.whoIsLikes);
+        return Objects.equals(title, video.title) && Objects.equals(description, video.description) && Objects.equals(channel, video.channel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, tags, description, channel, whoIsLikes);
+        return Objects.hash(title, description, channel);
     }
 
     @Override

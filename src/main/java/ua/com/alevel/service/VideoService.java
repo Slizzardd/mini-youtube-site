@@ -4,5 +4,7 @@ import ua.com.alevel.persistence.entity.video.Video;
 
 public interface VideoService extends BaseService<Video>{
 
+    void delete(Long id);
+
     Long getLastIndex();
 }

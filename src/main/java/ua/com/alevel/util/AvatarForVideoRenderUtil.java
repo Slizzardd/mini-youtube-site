@@ -1,29 +1,28 @@
 package ua.com.alevel.util;
 
 import org.springframework.web.multipart.MultipartFile;
-import ua.com.alevel.properties.StaticMainProperties;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public final class AvatarForVideoRenderUtil {
 
     private static double newWight;
     private static double newHeight;
 
-    public AvatarForVideoRenderUtil() {
+    private AvatarForVideoRenderUtil() {
+        throw new IllegalStateException("Utility class.");
     }
 
 
     public static String getImageAndReturnPathToNewAvatar(MultipartFile avatar, Long userId, Long lastIndexVideoOfDb) {
-        String fullPathToTheAvatar = generatePathToAvatar(
-                generatePathToUserFolder(userId, lastIndexVideoOfDb),
+        String fullPathToTheAvatar = GeneratePath.generatePathToAvatar(
+                GeneratePath.generatePathToUserFolder(GeneratePath.generatePathToFolder("video", userId), lastIndexVideoOfDb),
                 lastIndexVideoOfDb,
-                avatar);
+                avatar.getOriginalFilename());
         try {
             BufferedImage image = getProcessedImage(avatar);
             ImageIO.write(
@@ -77,23 +76,7 @@ public final class AvatarForVideoRenderUtil {
         return newImage;
     }
 
-    private static String generatePathToMainFolder(Long userId) {
-        return StaticMainProperties.PATH_PROJECT + "/src/main/resources/static/video/" + "user" + userId;
-    }
-
-    private static String generatePathToUserFolder(Long userId, Long lastIndexOfDb) {
-        return generatePathToMainFolder(userId) + "/video" + lastIndexOfDb;
-    }
-
-    private static String generatePathToAvatar(String pathToUserFolder, Long lastVideoIndexOfDb, MultipartFile multipartFile) {
-        return pathToUserFolder + "/" + "avatar" + +lastVideoIndexOfDb + getExtensionFile(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-    }
-
-    private static String getExtensionFile(String originalFileName) {
-        return originalFileName.substring(originalFileName.lastIndexOf('.'));
-    }
-
-    private static BufferedImage generateSmallSizeImage(BufferedImage bufferedImage){
+    private static BufferedImage generateSmallSizeImage(BufferedImage bufferedImage) {
         BufferedImage bufferedImageOutput = new BufferedImage((int) newWight,
                 (int) newHeight, bufferedImage.getType());
         Graphics2D g2d = bufferedImageOutput.createGraphics();

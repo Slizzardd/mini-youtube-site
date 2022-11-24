@@ -33,7 +33,7 @@ public class User extends BaseEntity {
     @ManyToMany(mappedBy = "subscribers")
     private Set<Channel> whoIsSubscribers;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Channel channel;
 
     @Column(name = "enabled")

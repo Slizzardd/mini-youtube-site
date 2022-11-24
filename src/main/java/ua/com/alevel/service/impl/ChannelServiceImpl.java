@@ -7,19 +7,21 @@ import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.channel.Channel;
 import ua.com.alevel.persistence.repository.channel.ChannelRepository;
 import ua.com.alevel.service.ChannelService;
+import ua.com.alevel.service.HelpService;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository channelRepository;
     private final CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper;
+    private final HelpService helpService;
 
-    public ChannelServiceImpl(ChannelRepository channelRepository, CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper) {
+    public ChannelServiceImpl(ChannelRepository channelRepository, CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper, HelpService helpService) {
         this.channelRepository = channelRepository;
         this.crudRepositoryHelper = crudRepositoryHelper;
+        this.helpService = helpService;
     }
 
     @Override

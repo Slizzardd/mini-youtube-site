@@ -12,8 +12,6 @@ public interface BaseService<E extends BaseEntity> {
 
     void update(E entity);
 
-    void delete(Long id);
-
     E findById(Long id);
 
     DataTableResponse<E> findAll(DataTableRequest request);

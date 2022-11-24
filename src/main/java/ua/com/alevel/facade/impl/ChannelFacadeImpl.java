@@ -1,16 +1,16 @@
 package ua.com.alevel.facade.impl;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.exception.EntityNotFoundException;
 import ua.com.alevel.facade.ChannelFacade;
 import ua.com.alevel.persistence.entity.channel.Channel;
 import ua.com.alevel.persistence.entity.channel.User;
+import ua.com.alevel.properties.StaticMainProperties;
 import ua.com.alevel.service.ChannelService;
 import ua.com.alevel.service.UserService;
-import ua.com.alevel.util.AvatarRenderUtil;
+import ua.com.alevel.util.AvatarForChannelUtil;
 import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.response.ChannelResponseDto;
 
@@ -45,14 +45,14 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long channelId, String userEmail) {
 
     }
 
     @Override
-    public void update(ChannelRequestDto channelRequestDto) {
-        Channel channel = channelService.findById(
-                userService.findByEmail(channelRequestDto.getUserEmail()).getId());
+    public void update(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException {
+        User user = userService.findByEmail(channelRequestDto.getUserEmail());
+        Channel channel = channelService.findById(user.getChannel().getId());
         if (ObjectUtils.isNotEmpty(channel)) {
             setMainChannelInformation(channel, channelRequestDto, channel.getUser());
             channelService.update(channel);
@@ -96,33 +96,36 @@ public class ChannelFacadeImpl implements ChannelFacade {
         }
     }
 
-    private void updateAvatar(ChannelRequestDto channelRequestDto, Channel channel){
-        if (ObjectUtils.isNotEmpty(channelRequestDto.getAvatar())) {
-            if (StringUtils.isEmpty(channel.getPathToAvatar())) {
-                channel.setPathToAvatar(AvatarRenderUtil.writeImageToFilesAndGetPath(
-                        channelRequestDto.getAvatar(),
-                        channelService.getLastIndex(),
-                        channel.getUser().getId()));
-            } else if (StringUtils.isNotEmpty(channel.getPathToAvatar())) {
-                AvatarRenderUtil.writeNewImageToFiles(
-                        channelRequestDto.getAvatar(),
-                        channel.getPathToAvatar());
-            }
+    private void updateAvatar(ChannelRequestDto channelRequestDto, Channel channel) {
+        if(!channelRequestDto.getAvatar().isEmpty()){
+            channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
+                    channelRequestDto.getAvatar(),
+                    channel.getUser().getId(),
+                    channel.getId()));
         }
     }
 
-    private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user){
-        channel.setLogin(channelRequestDto.getChannelLogin());
-        channel.setDescription(channelRequestDto.getDescription());
-        channel.setName(channelRequestDto.getChannelName());
-        if(channel.getId() != null){
-            updateAvatar(channelRequestDto, channel);
-        }else{
-            channel.setPathToAvatar(AvatarRenderUtil.writeImageToFilesAndGetPath(
-                    channelRequestDto.getAvatar(),
-                    channelService.getLastIndex(),
-                    user.getId()));
+    private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user) throws FileAlreadyExistsException {
+        try{
+            channel.setLogin(channelRequestDto.getChannelLogin());
+            channel.setDescription(channelRequestDto.getDescription());
+            channel.setName(channelRequestDto.getChannelName());
+            if (channel.getId() != null) {
+                updateAvatar(channelRequestDto, channel);
+            } else {
+                if(channelRequestDto.getAvatar().isEmpty()){
+                    channel.setPathToAvatar(StaticMainProperties.PATH_TO_BASE_AVATAR);
+                }else{
+                    channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
+                            channelRequestDto.getAvatar(),
+                            user.getId(),
+                            channelService.getLastIndex()));
+                }
+            }
             channel.setUser(user);
+        }catch (NullPointerException e){
+            throw new FileAlreadyExistsException("Error downloading the file");
         }
+
     }
 }

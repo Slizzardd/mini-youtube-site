@@ -7,10 +7,12 @@ import ua.com.alevel.persistence.crud.CrudRepositoryHelper;
 import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.channel.User;
+import ua.com.alevel.persistence.entity.video.Video;
 import ua.com.alevel.persistence.repository.user.UserRepository;
+import ua.com.alevel.service.HelpService;
 import ua.com.alevel.service.UserService;
 
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,13 +20,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CrudRepositoryHelper<User, UserRepository> crudRepositoryHelper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final HelpService helpService;
 
     public UserServiceImpl(UserRepository userRepository,
                            CrudRepositoryHelper<User, UserRepository> crudRepositoryHelper,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder, HelpService helpService) {
         this.userRepository = userRepository;
         this.crudRepositoryHelper = crudRepositoryHelper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.helpService = helpService;
     }
 
     @Override
@@ -43,8 +47,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) {
-        crudRepositoryHelper.delete(userRepository, id);
+    public void delete(User user) {
+        Set<Video> videoSet = user.getChannel().getVideos();
+        Long userId = user.getId();
+        String pathToAvatar = user.getChannel().getPathToAvatar();
+        crudRepositoryHelper.delete(userRepository, user.getId());
+        helpService.deletingAvatarWhenDeletingEntity(videoSet, userId, pathToAvatar);
     }
 
     @Override
