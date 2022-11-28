@@ -9,11 +9,13 @@ import ua.com.alevel.persistence.entity.channel.Channel;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.properties.StaticMainProperties;
 import ua.com.alevel.service.ChannelService;
+import ua.com.alevel.service.HelpService;
 import ua.com.alevel.service.UserService;
 import ua.com.alevel.util.AvatarForChannelUtil;
 import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.response.ChannelResponseDto;
 
+import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Objects;
 
@@ -22,10 +24,12 @@ public class ChannelFacadeImpl implements ChannelFacade {
 
     private final ChannelService channelService;
     private final UserService userService;
+    private final HelpService<Channel> helpService;
 
-    public ChannelFacadeImpl(ChannelService channelService, UserService userService) {
+    public ChannelFacadeImpl(ChannelService channelService, UserService userService, HelpService<Channel> helpService) {
         this.channelService = channelService;
         this.userService = userService;
+        this.helpService = helpService;
     }
 
     @Override
@@ -36,9 +40,16 @@ public class ChannelFacadeImpl implements ChannelFacade {
             Channel channel = new Channel();
 
             setMainChannelInformation(channel, channelRequestDto, user);
+            if (channelRequestDto.getAvatar().isEmpty()) {
+                channel.setPathToAvatar(StaticMainProperties.PATH_TO_BASE_AVATAR);
+            } else {
+                channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
+                        channelRequestDto.getAvatar(),
+                        user.getId(),
+                        channelService.getLastIndex()));
+            }
             channelService.create(channel);
 
-//          @TODO Figure out how to do it differently
             user.setChannel(channel);
             userService.update(user);
         }
@@ -59,6 +70,22 @@ public class ChannelFacadeImpl implements ChannelFacade {
         Channel channel = channelService.findById(user.getChannel().getId());
         if (ObjectUtils.isNotEmpty(channel)) {
             setMainChannelInformation(channel, channelRequestDto, channel.getUser());
+            if (Objects.equals(channel.getPathToAvatar(), StaticMainProperties.PATH_TO_BASE_AVATAR)
+                    && !channelRequestDto.getAvatar().isEmpty()) {
+                channel.setPathToAvatar(
+                        AvatarForChannelUtil.writeImageToFilesAndGetPath(
+                                channelRequestDto.getAvatar(),
+                                user.getId(),
+                                channel.getId()));
+            }else if(!Objects.equals(channel.getPathToAvatar(), StaticMainProperties.PATH_TO_BASE_AVATAR)
+                    && !channelRequestDto.getAvatar().isEmpty()){
+                helpService.recursiveDelete(new File(channel.getPathToAvatar()));
+                channel.setPathToAvatar(
+                        AvatarForChannelUtil.writeImageToFilesAndGetPath(
+                                channelRequestDto.getAvatar(),
+                                user.getId(),
+                                channel.getId()));
+            }
             channelService.update(channel);
         }
     }
@@ -100,36 +127,10 @@ public class ChannelFacadeImpl implements ChannelFacade {
         }
     }
 
-    private void updateAvatar(ChannelRequestDto channelRequestDto, Channel channel) {
-        if(!channelRequestDto.getAvatar().isEmpty()){
-            channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
-                    channelRequestDto.getAvatar(),
-                    channel.getUser().getId(),
-                    channel.getId()));
-        }
-    }
-
-    private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user) throws FileAlreadyExistsException {
-        try{
-            channel.setLogin(channelRequestDto.getChannelLogin());
-            channel.setDescription(channelRequestDto.getDescription());
-            channel.setName(channelRequestDto.getChannelName());
-            if (channel.getId() != null) {
-                updateAvatar(channelRequestDto, channel);
-            } else {
-                if(channelRequestDto.getAvatar().isEmpty()){
-                    channel.setPathToAvatar(StaticMainProperties.PATH_TO_BASE_AVATAR);
-                }else{
-                    channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
-                            channelRequestDto.getAvatar(),
-                            user.getId(),
-                            channelService.getLastIndex()));
-                }
-            }
-            channel.setUser(user);
-        }catch (NullPointerException e){
-            throw new FileAlreadyExistsException("Error downloading the file");
-        }
-
+    private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user) {
+        channel.setLogin(channelRequestDto.getChannelLogin());
+        channel.setDescription(channelRequestDto.getDescription());
+        channel.setName(channelRequestDto.getChannelName());
+        channel.setUser(user);
     }
 }

@@ -29,7 +29,7 @@ public class HelpServiceImpl<E extends BaseEntity> implements HelpService<E> {
         }
     }
 
-    private static void recursiveDelete(File file) {
+    public void recursiveDelete(File file) {
         if (!file.exists())
             return;
 

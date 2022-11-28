@@ -7,6 +7,7 @@ import ua.com.alevel.service.CommentService;
 import ua.com.alevel.service.UserService;
 import ua.com.alevel.service.VideoService;
 import ua.com.alevel.web.dto.request.CommentRequestDto;
+import ua.com.alevel.web.dto.response.CommentResponseDto;
 
 @Service
 public class CommentFacadeImpl implements CommentFacade {
@@ -34,5 +35,17 @@ public class CommentFacadeImpl implements CommentFacade {
     @Override
     public void delete(Long id) {
         commentService.delete(id);
+    }
+
+    @Override
+    public void update(Long id, CommentRequestDto commentRequestDto) {
+        Comment comment = commentService.findById(id);
+        comment.setText(commentRequestDto.getText());
+        commentService.update(comment);
+    }
+
+    @Override
+    public CommentResponseDto findById(Long id) {
+        return new CommentResponseDto(commentService.findById(id));
     }
 }

@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void update(Comment entity) {
-
+        crudRepositoryHelper.update(commentRepository, entity);
     }
 
     @Override

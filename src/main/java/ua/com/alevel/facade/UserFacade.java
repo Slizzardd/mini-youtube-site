@@ -9,4 +9,5 @@ public interface UserFacade extends BaseFacade<UserRequestDto, UserResponseDto> 
 
     void update(Long id, UserRequestDto userRequestDto);
     void delete(Long userId, String userEmail);
+    UserResponseDto findById(Long id);
 }

@@ -1,13 +1,12 @@
 package ua.com.alevel.web.rest;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.com.alevel.facade.VideoFacade;
+import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.request.VideoRequestDto;
 
 @RestController
@@ -36,6 +35,18 @@ public class VideoRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             videoFacade.delete(1L);
+            return "done";
+        } else {
+            return "XUITA KAKAYTO";
+        }
+    }
+
+    @PostMapping(value = "/updateVideo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String update(@ModelAttribute VideoRequestDto videoRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            videoRequestDto.setUserEmail(authentication.getName());
+            videoFacade.update(1L, videoRequestDto);
             return "done";
         } else {
             return "XUITA KAKAYTO";

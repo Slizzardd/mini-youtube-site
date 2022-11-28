@@ -30,7 +30,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void update(Video entity) {
-
+        crudRepositoryHelper.update(videoRepository, entity);
     }
 
     @Override

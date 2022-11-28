@@ -12,7 +12,7 @@ public class UserResponseDto extends ResponseDto{
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String country;
+    private String password;
 
     public UserResponseDto(User user) {
         setId(user.getId());
@@ -23,6 +23,10 @@ public class UserResponseDto extends ResponseDto{
         this.status = user.getStatus();
         this.role = user.getRole();
         this.login = user.getLogin();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.phoneNumber = user.getPhoneNumber();
+        this.password = user.getPassword();
     }
 
     public String getEmail() {
@@ -81,11 +85,11 @@ public class UserResponseDto extends ResponseDto{
         this.phoneNumber = phoneNumber;
     }
 
-    public String getCountry() {
-        return country;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

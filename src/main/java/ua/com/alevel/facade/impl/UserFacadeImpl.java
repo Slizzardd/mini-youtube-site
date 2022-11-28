@@ -8,6 +8,7 @@ import ua.com.alevel.facade.UserFacade;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.service.UserService;
 import ua.com.alevel.web.dto.request.UserRequestDto;
+import ua.com.alevel.web.dto.response.UserResponseDto;
 
 import java.util.Objects;
 
@@ -44,6 +45,11 @@ public class UserFacadeImpl implements UserFacade {
         } else {
             throw new AccessException("You cannot delete an account that is not yours");
         }
+    }
+
+    @Override
+    public UserResponseDto findById(Long id) {
+        return new UserResponseDto(userService.findById(id));
     }
 
     private void reqToUser(UserRequestDto userRequestDto, User user){

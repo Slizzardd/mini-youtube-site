@@ -16,6 +16,12 @@
 <br>
 <a href="/comment/createComment" th:class="${isLogin} ? 'login' : 'not_login'">comment</a>
 <br>
+<a href="/user/update" th:class="${isLogin} ? 'login' : 'not_login'">updateUser</a>
+<br>
+<a href="/video/update" th:class="${isLogin} ? 'login' : 'not_login'">updateVideo</a>
+<br>
+<a href="/comment/update" th:class="${isLogin} ? 'login' : 'not_login'">updateComment</a>
+<br>
 <form action="/auth/logout" method="POST">
     <button class="button" type="submit">Logout</button>
 </form>

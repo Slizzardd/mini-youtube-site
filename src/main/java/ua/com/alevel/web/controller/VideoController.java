@@ -19,7 +19,7 @@ public class VideoController {
     }
 
     @RequestMapping("/uploadVideo")
-    public String update(Model model) {
+    public String create(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
@@ -27,5 +27,17 @@ public class VideoController {
             model.addAttribute("isLogin", false);
         }
         return "/createVideo";
+    }
+
+    @RequestMapping("/update")
+    public String update(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            model.addAttribute("isLogin", true);
+            model.addAttribute("video", videoFacade.findById(1L));
+        }else{
+            model.addAttribute("isLogin", false);
+        }
+        return "/updateVideo";
     }
 }
