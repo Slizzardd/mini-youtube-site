@@ -1,11 +1,9 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.persistence.entity.channel.User;
-import ua.com.alevel.persistence.entity.video.Video;
+import ua.com.alevel.persistence.entity.BaseEntity;
 
-import java.util.Set;
 
-public interface HelpService{
+public interface HelpService<E extends BaseEntity> {
 
-    void deletingAvatarWhenDeletingEntity(Set<Video> videoSet, Long userId, String pathToChannelAvatar);
+    void deletingFileWhenDeleteEntity(E entity);
 }

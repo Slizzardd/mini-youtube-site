@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface ChannelService extends BaseService<Channel>{
 
-    void delete(Long id);
+    void delete(Channel channel);
 
     Channel findByLogin(String login);
 

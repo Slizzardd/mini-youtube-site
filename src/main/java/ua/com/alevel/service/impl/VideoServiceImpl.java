@@ -6,19 +6,21 @@ import ua.com.alevel.persistence.datatable.DataTableRequest;
 import ua.com.alevel.persistence.datatable.DataTableResponse;
 import ua.com.alevel.persistence.entity.video.Video;
 import ua.com.alevel.persistence.repository.video.VideoRepository;
+import ua.com.alevel.service.HelpService;
 import ua.com.alevel.service.VideoService;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
     private final CrudRepositoryHelper <Video, VideoRepository> crudRepositoryHelper;
+    private final HelpService<Video> helpService;
 
-    public VideoServiceImpl(VideoRepository videoRepository, CrudRepositoryHelper<Video, VideoRepository> crudRepositoryHelper) {
+    public VideoServiceImpl(VideoRepository videoRepository, CrudRepositoryHelper<Video, VideoRepository> crudRepositoryHelper, HelpService<Video> helpService) {
         this.videoRepository = videoRepository;
         this.crudRepositoryHelper = crudRepositoryHelper;
+        this.helpService = helpService;
     }
 
     @Override
@@ -32,8 +34,9 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(Video video) {
+        crudRepositoryHelper.delete(videoRepository, video.getId());
+        helpService.deletingFileWhenDeleteEntity(video);
     }
 
     @Override

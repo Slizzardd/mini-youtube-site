@@ -30,4 +30,9 @@ public class CommentFacadeImpl implements CommentFacade {
         comment.setVideo(videoService.findById(commentRequestDto.getIdVideo()));
         commentService.create(comment);
     }
+
+    @Override
+    public void delete(Long id) {
+        commentService.delete(id);
+    }
 }

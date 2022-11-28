@@ -16,9 +16,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository channelRepository;
     private final CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper;
-    private final HelpService helpService;
+    private final HelpService<Channel> helpService;
 
-    public ChannelServiceImpl(ChannelRepository channelRepository, CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper, HelpService helpService) {
+    public ChannelServiceImpl(ChannelRepository channelRepository, CrudRepositoryHelper<Channel, ChannelRepository> crudRepositoryHelper, HelpService<Channel> helpService) {
         this.channelRepository = channelRepository;
         this.crudRepositoryHelper = crudRepositoryHelper;
         this.helpService = helpService;
@@ -35,8 +35,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(Channel channel) {
+        helpService.deletingFileWhenDeleteEntity(channel);
     }
 
     @Override

@@ -37,4 +37,9 @@ public class VideoFacadeImpl implements VideoFacade {
         video.setChannel(user.getChannel());
         videoService.create(video);
     }
+
+    @Override
+    public void delete(Long id) {
+        videoService.delete(videoService.findById(id));
+    }
 }

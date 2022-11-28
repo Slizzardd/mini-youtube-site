@@ -30,4 +30,15 @@ public class VideoRestController {
             return "XUITA KAKAYTO";
         }
     }
+
+    @RequestMapping("/deleteVideo")
+    public String delete(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            videoFacade.delete(1L);
+            return "done";
+        } else {
+            return "XUITA KAKAYTO";
+        }
+    }
 }

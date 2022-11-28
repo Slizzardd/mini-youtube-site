@@ -35,4 +35,15 @@ public class CommentRestController {
             return "XUITA KAKAYTO";
         }
     }
+
+    @RequestMapping("/deleteComment")
+    public String delete(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            commentFacade.delete(1L);
+            return "done";
+        } else {
+            return "XUITA KAKAYTO";
+        }
+    }
 }

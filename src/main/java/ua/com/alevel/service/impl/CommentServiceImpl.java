@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(Long id) {
-
+        crudRepositoryHelper.delete(commentRepository, id);
     }
 
     @Override

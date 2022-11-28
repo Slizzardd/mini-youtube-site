@@ -45,8 +45,12 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void delete(Long channelId, String userEmail) {
-
+    public void delete(String userEmail) {
+        User user = userService.findByEmail(userEmail);
+        Channel channel = user.getChannel();
+        user.setChannel(null);
+        userService.update(user);
+        channelService.delete(channel);
     }
 
     @Override
