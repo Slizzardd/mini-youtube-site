@@ -9,13 +9,15 @@ public interface ChannelFacade extends BaseFacade<ChannelRequestDto, ChannelResp
 
     void create(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException;
 
-    void delete(String userEmail);
-
     void update(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException;
+
+    void delete(Long id);
 
     ChannelResponseDto findByUser(String userEmail);
 
     ChannelResponseDto findById(Long id);
 
     ChannelResponseDto findByLogin(String login);
+
+
 }

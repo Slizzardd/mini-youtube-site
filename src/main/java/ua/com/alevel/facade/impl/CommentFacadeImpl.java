@@ -33,15 +33,15 @@ public class CommentFacadeImpl implements CommentFacade {
     }
 
     @Override
-    public void delete(Long id) {
-        commentService.delete(id);
-    }
-
-    @Override
     public void update(Long id, CommentRequestDto commentRequestDto) {
         Comment comment = commentService.findById(id);
         comment.setText(commentRequestDto.getText());
         commentService.update(comment);
+    }
+
+    @Override
+    public void delete(Long id) {
+        commentService.delete(id);
     }
 
     @Override

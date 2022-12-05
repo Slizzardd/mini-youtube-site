@@ -56,9 +56,9 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Long getLastIndex() {
-        try{
+        try {
             return Objects.requireNonNull(channelRepository.findTopByOrderByIdDesc().orElse(null)).getId() + 1L;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return 1L;
         }
     }

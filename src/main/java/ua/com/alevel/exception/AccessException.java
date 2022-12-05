@@ -1,6 +1,6 @@
 package ua.com.alevel.exception;
 
-public class AccessException extends RuntimeException{
+public class AccessException extends RuntimeException {
 
     private final String message;
 

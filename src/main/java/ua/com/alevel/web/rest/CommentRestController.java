@@ -7,11 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ua.com.alevel.facade.CommentFacade;
 import ua.com.alevel.facade.UserFacade;
-import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.request.CommentRequestDto;
-import ua.com.alevel.web.dto.request.VideoRequestDto;
-
-import java.nio.file.FileAlreadyExistsException;
 
 @RestController
 @RequestMapping("/")
@@ -19,6 +15,7 @@ public class CommentRestController {
 
     private final CommentFacade commentFacade;
     private final UserFacade userFacade;
+
     public CommentRestController(CommentFacade commentFacade, UserFacade userFacade) {
         this.commentFacade = commentFacade;
         this.userFacade = userFacade;
@@ -39,7 +36,7 @@ public class CommentRestController {
     }
 
     @RequestMapping("/deleteComment")
-    public String delete(){
+    public String delete() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             commentFacade.delete(1L);
@@ -49,12 +46,12 @@ public class CommentRestController {
         }
     }
 
-    @PostMapping(value = "/updateComment")
-    public String update(@RequestBody CommentRequestDto commentRequestDto) {
+    @PostMapping(value = "/updateComment", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String update(@ModelAttribute CommentRequestDto commentRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             commentFacade.update(1L, commentRequestDto);
-                return "done";
+            return "done";
         } else {
             return "XUITA KAKAYTO";
         }

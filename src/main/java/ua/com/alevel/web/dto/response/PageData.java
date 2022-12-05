@@ -27,7 +27,7 @@ public class PageData<REQ extends ResponseDto> {
         this.totalPageSize = 0;
         this.itemsSize = 0;
         this.items = new ArrayList<>();
-        this.pageSizeItems = new int[]{ 10, 25, 50, 100 };
+        this.pageSizeItems = new int[]{10, 25, 50, 100};
         this.showFirst = false;
         this.showPrevious = false;
         this.showNext = false;

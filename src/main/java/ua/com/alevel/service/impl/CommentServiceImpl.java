@@ -8,8 +8,6 @@ import ua.com.alevel.persistence.entity.comment.Comment;
 import ua.com.alevel.persistence.repository.comment.CommentRepository;
 import ua.com.alevel.service.CommentService;
 
-import java.util.Optional;
-
 @Service
 public class CommentServiceImpl implements CommentService {
 

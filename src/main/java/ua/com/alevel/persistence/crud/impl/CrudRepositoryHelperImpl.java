@@ -65,7 +65,6 @@ public class CrudRepositoryHelperImpl<
         RequestHelper requestHelper = new RequestHelper();
         requestFill(requestHelper, request);
 
-//        @TODO do searchSpecification
 //        SearchSpecification<E> searchSpecification = new SearchSpecificationProcess<>();
 //        Specification<E> specification = searchSpecification.generateSpecification(request, entityClass);
 

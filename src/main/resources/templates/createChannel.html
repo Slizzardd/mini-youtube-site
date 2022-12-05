@@ -84,9 +84,9 @@
                             timeout: 1000000,
                             success: function (XHR) {
                                 console.log(XHR)
-                                if(XHR === 'done'){
+                                if (XHR === 'done') {
                                     window.location.href = '/';
-                                }else{
+                                } else {
                                     $('.error100').css('display', 'block')
                                         .html(XHR)
                                         .css('text-align', 'center')

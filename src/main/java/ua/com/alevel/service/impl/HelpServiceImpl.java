@@ -13,31 +13,24 @@ public class HelpServiceImpl<E extends BaseEntity> implements HelpService<E> {
     @Override
     public void deletingFileWhenDeleteEntity(E entity) {
         switch (entity.getClass().getSimpleName()) {
-            case "User": {
+            case "User":
                 recursiveDelete(new File(GeneratePath.generatePathToFolder("video", entity.getId())));
                 recursiveDelete(new File(GeneratePath.generatePathToFolder("avatarChannel", entity.getId())));
-            }
-            case "Channel": {
+            case "Channel":
                 recursiveDelete(new File(GeneratePath.generatePathToFolder("avatarChannel", entity.getId())));
                 recursiveDelete(new File(GeneratePath.generatePathToFolder("video", entity.getId())));
-            }
-            case "Video": {
+            case "Video":
                 recursiveDelete(new File(GeneratePath.generatePathToUserFolder(
-                        GeneratePath.generatePathToFolder("video", entity.getId()), entity.getId()
-                )));
-            }
+                        GeneratePath.generatePathToFolder("video", entity.getId()), entity.getId())));
         }
     }
 
     public void recursiveDelete(File file) {
-        if (!file.exists())
-            return;
+        if (!file.exists()) return;
 
-        if (file.isDirectory()) {
-            for (File f : file.listFiles()) {
-                recursiveDelete(f);
-            }
-        }
+        if (file.isDirectory())
+            for (File f : file.listFiles()) recursiveDelete(f);
+
         file.delete();
     }
 

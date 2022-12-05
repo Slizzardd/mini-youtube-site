@@ -2,7 +2,7 @@ package ua.com.alevel.web.dto.response;
 
 import ua.com.alevel.persistence.entity.comment.Comment;
 
-public class CommentResponseDto extends ResponseDto{
+public class CommentResponseDto extends ResponseDto {
 
     private String text;
 

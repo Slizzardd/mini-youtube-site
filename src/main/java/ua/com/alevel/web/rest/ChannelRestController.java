@@ -59,7 +59,7 @@ public class ChannelRestController {
     public String delete() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            channelFacade.delete(authentication.getName());
+            channelFacade.delete(1L);
             return "done";
         } else {
             return "XUITA KAKAYTO";

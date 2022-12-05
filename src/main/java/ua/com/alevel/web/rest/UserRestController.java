@@ -1,17 +1,14 @@
 package ua.com.alevel.web.rest;
 
 import org.json.JSONObject;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ua.com.alevel.exception.EntityExistException;
 import ua.com.alevel.facade.UserFacade;
-import ua.com.alevel.web.dto.request.ChannelRequestDto;
 import ua.com.alevel.web.dto.request.UserRequestDto;
 
 @RestController
@@ -24,8 +21,8 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/add_user")
-    public String addUser(@RequestBody UserRequestDto userRequestDto){
-        try{
+    public String addUser(@RequestBody UserRequestDto userRequestDto) {
+        try {
             userFacade.create(userRequestDto);
             return JSONObject.quote("done");
         } catch (EntityExistException e) {
@@ -37,7 +34,7 @@ public class UserRestController {
     public String delete() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            userFacade.delete(1L, authentication.getName());
+            userFacade.delete(1L);
             return "done";
         } else {
             return "XUITA KAKAYTO";

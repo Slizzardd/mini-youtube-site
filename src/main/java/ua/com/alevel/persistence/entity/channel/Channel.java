@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import ua.com.alevel.persistence.entity.BaseEntity;
 import ua.com.alevel.persistence.entity.comment.Comment;
 import ua.com.alevel.persistence.entity.video.Video;
+import ua.com.alevel.properties.StaticMainProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -68,8 +69,7 @@ public class Channel extends BaseEntity {
 
     public Channel() {
         super();
-        // @TODO Insert a link to a basic avatar
-        this.pathToAvatar = "";
+        this.pathToAvatar = StaticMainProperties.PATH_TO_BASE_AVATAR;
         this.subscribers = new HashSet<>();
         this.comments = new HashSet<>();
         this.videos = new HashSet<>();

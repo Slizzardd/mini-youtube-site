@@ -25,11 +25,11 @@ public final class GeneratePath {
         return pathToAvatar.substring(pathToAvatar.lastIndexOf(".") + 1);     //jpg
     }
 
-    public static String generatePathToUserFolder(String pathToFolder, Long lastIndexOfDb){
-       return pathToFolder + "/video" + lastIndexOfDb;
+    public static String generatePathToUserFolder(String pathToFolder, Long lastIndexOfDb) {
+        return pathToFolder + "/video" + lastIndexOfDb;
     }
 
-    public static String generatePathToFile(String nameFile, String pathToUserFolder, Long lastIndexOfDb, MultipartFile multipartFile){
+    public static String generatePathToFile(String nameFile, String pathToUserFolder, Long lastIndexOfDb, MultipartFile multipartFile) {
         return pathToUserFolder + "/" + nameFile + lastIndexOfDb + getExtensionFile(Objects.requireNonNull(multipartFile.getOriginalFilename()));
     }
 

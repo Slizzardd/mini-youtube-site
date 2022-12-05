@@ -13,8 +13,9 @@ import java.util.Objects;
 
 @Service
 public class VideoServiceImpl implements VideoService {
+
     private final VideoRepository videoRepository;
-    private final CrudRepositoryHelper <Video, VideoRepository> crudRepositoryHelper;
+    private final CrudRepositoryHelper<Video, VideoRepository> crudRepositoryHelper;
     private final HelpService<Video> helpService;
 
     public VideoServiceImpl(VideoRepository videoRepository, CrudRepositoryHelper<Video, VideoRepository> crudRepositoryHelper, HelpService<Video> helpService) {
@@ -51,9 +52,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Long getLastIndex() {
-        try{
+        try {
             return Objects.requireNonNull(videoRepository.findTopByOrderByIdDesc().orElse(null)).getId() + 1L;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return 1L;
         }
     }

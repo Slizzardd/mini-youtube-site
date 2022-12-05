@@ -7,9 +7,9 @@ public interface VideoFacade extends BaseFacade<VideoRequestDto, VideoResponseDt
 
     void create(VideoRequestDto videoRequestDto);
 
-    void delete(Long id);
-
     void update(Long id, VideoRequestDto videoRequestDto);
+
+    void delete(Long id);
 
     VideoResponseDto findById(Long id);
 }

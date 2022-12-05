@@ -38,11 +38,9 @@ public class ChannelFacadeImpl implements ChannelFacade {
         assert user != null;
         if (checkUser(user, channelRequestDto.getChannelLogin())) {
             Channel channel = new Channel();
-
             setMainChannelInformation(channel, channelRequestDto, user);
-            if (channelRequestDto.getAvatar().isEmpty()) {
-                channel.setPathToAvatar(StaticMainProperties.PATH_TO_BASE_AVATAR);
-            } else {
+
+            if (!channelRequestDto.getAvatar().isEmpty()) {
                 channel.setPathToAvatar(AvatarForChannelUtil.writeImageToFilesAndGetPath(
                         channelRequestDto.getAvatar(),
                         user.getId(),
@@ -56,38 +54,27 @@ public class ChannelFacadeImpl implements ChannelFacade {
     }
 
     @Override
-    public void delete(String userEmail) {
-        User user = userService.findByEmail(userEmail);
-        Channel channel = user.getChannel();
-        user.setChannel(null);
-        userService.update(user);
-        channelService.delete(channel);
-    }
-
-    @Override
     public void update(ChannelRequestDto channelRequestDto) throws FileAlreadyExistsException {
         User user = userService.findByEmail(channelRequestDto.getUserEmail());
         Channel channel = channelService.findById(user.getChannel().getId());
         if (ObjectUtils.isNotEmpty(channel)) {
+
             setMainChannelInformation(channel, channelRequestDto, channel.getUser());
-            if (Objects.equals(channel.getPathToAvatar(), StaticMainProperties.PATH_TO_BASE_AVATAR)
-                    && !channelRequestDto.getAvatar().isEmpty()) {
-                channel.setPathToAvatar(
-                        AvatarForChannelUtil.writeImageToFilesAndGetPath(
-                                channelRequestDto.getAvatar(),
-                                user.getId(),
-                                channel.getId()));
-            }else if(!Objects.equals(channel.getPathToAvatar(), StaticMainProperties.PATH_TO_BASE_AVATAR)
-                    && !channelRequestDto.getAvatar().isEmpty()){
-                helpService.recursiveDelete(new File(channel.getPathToAvatar()));
-                channel.setPathToAvatar(
-                        AvatarForChannelUtil.writeImageToFilesAndGetPath(
-                                channelRequestDto.getAvatar(),
-                                user.getId(),
-                                channel.getId()));
+
+            if (checkAvatar(channel, channelRequestDto)) {
+                deletingOldAvatar(channel.getPathToAvatar());
             }
             channelService.update(channel);
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        Channel channel = channelService.findById(id);
+        User user = channel.getUser();
+        user.setChannel(null);
+        userService.update(user);
+        channelService.delete(channel);
     }
 
     @Override
@@ -107,7 +94,7 @@ public class ChannelFacadeImpl implements ChannelFacade {
         if (ObjectUtils.isNotEmpty(channel)) {
             return new ChannelResponseDto(channel);
         } else {
-            return null;
+            throw new EntityNotFoundException("This entity is not found");
         }
     }
 
@@ -127,10 +114,19 @@ public class ChannelFacadeImpl implements ChannelFacade {
         }
     }
 
+    private boolean checkAvatar(Channel channel, ChannelRequestDto channelRequestDto) {
+        return !channelRequestDto.getAvatar().isEmpty()
+                && !Objects.equals(channel.getPathToAvatar(), StaticMainProperties.PATH_PROJECT);
+    }
+
     private void setMainChannelInformation(Channel channel, ChannelRequestDto channelRequestDto, User user) {
         channel.setLogin(channelRequestDto.getChannelLogin());
         channel.setDescription(channelRequestDto.getDescription());
         channel.setName(channelRequestDto.getChannelName());
         channel.setUser(user);
+    }
+
+    private void deletingOldAvatar(String pathToAvatar) {
+        helpService.recursiveDelete(new File(pathToAvatar));
     }
 }

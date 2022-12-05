@@ -2,9 +2,7 @@ package ua.com.alevel.web.dto.request;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.plaf.multi.MultiButtonUI;
-
-public class VideoRequestDto extends RequestDto{
+public class VideoRequestDto extends RequestDto {
 
     private String descriptionVideo;
     private String tagsVideo;

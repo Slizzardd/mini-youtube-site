@@ -23,7 +23,7 @@ public class VideoController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/createVideo";
@@ -35,7 +35,7 @@ public class VideoController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
             model.addAttribute("video", videoFacade.findById(1L));
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/updateVideo";

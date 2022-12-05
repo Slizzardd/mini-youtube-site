@@ -43,7 +43,8 @@
 
                 <div class="wrap-input100 validate-input m-b-23">
                     <span class="label-input100">Channel description</span>
-                    <input class="input100" type="text" name="description" th:value="${channel.getDescriptionChannel()}">
+                    <input class="input100" type="text" name="description"
+                           th:value="${channel.getDescriptionChannel()}">
                 </div>
 
                 <div class="text-right p-t-8 p-b-31"></div>
@@ -84,9 +85,9 @@
                             timeout: 1000000,
                             success: function (XHR) {
                                 console.log(XHR)
-                                if(XHR === 'done'){
+                                if (XHR === 'done') {
                                     window.location.href = '/';
-                                }else{
+                                } else {
                                     $('.error100').css('display', 'block')
                                         .html(XHR)
                                         .css('text-align', 'center')

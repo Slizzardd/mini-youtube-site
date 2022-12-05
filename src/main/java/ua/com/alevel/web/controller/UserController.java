@@ -25,8 +25,8 @@ public class UserController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
             UserResponseDto userResponseDto = userFacade.findById(1L);
-            model.addAttribute("user",userResponseDto);
-        }else{
+            model.addAttribute("user", userResponseDto);
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/updateUser";

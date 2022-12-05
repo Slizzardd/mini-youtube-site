@@ -5,7 +5,7 @@ import ua.com.alevel.persistence.entity.comment.Comment;
 
 import java.util.Set;
 
-public class ChannelResponseDto extends ResponseDto{
+public class ChannelResponseDto extends ResponseDto {
 
     private String nameChannel;
     private String descriptionChannel;

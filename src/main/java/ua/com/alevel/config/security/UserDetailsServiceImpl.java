@@ -23,12 +23,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user;
-        if(Validation.emailValidate(username)){
+        if (Validation.emailValidate(username)) {
             user = userRepository.findByEmail(username).orElse(null);
-        }else{
+        } else {
             user = userRepository.findByLogin(username).orElse(null);
         }
-        if(ObjectUtils.isEmpty(user)){
+        if (ObjectUtils.isEmpty(user)) {
             throw new UsernameNotFoundException("invalid username or password");
         }
         return fromUser(user);

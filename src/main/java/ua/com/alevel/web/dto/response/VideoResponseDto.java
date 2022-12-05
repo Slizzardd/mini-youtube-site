@@ -2,7 +2,7 @@ package ua.com.alevel.web.dto.response;
 
 import ua.com.alevel.persistence.entity.video.Video;
 
-public class VideoResponseDto extends ResponseDto{
+public class VideoResponseDto extends ResponseDto {
 
     private String pathToVideo;
     private String pathToAvatar;

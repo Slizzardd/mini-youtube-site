@@ -19,7 +19,7 @@ public final class AvatarForChannelUtil {
         throw new IllegalStateException("Utility class.");
     }
 
-    public static String writeImageToFilesAndGetPath(MultipartFile multipartFile, Long userId, Long lastIndexOfDb) throws NullPointerException{
+    public static String writeImageToFilesAndGetPath(MultipartFile multipartFile, Long userId, Long lastIndexOfDb) throws NullPointerException {
         try {
             BufferedImage image = ImageIO.read(multipartFile.getInputStream());
             if (checkSizeImage(image)) {

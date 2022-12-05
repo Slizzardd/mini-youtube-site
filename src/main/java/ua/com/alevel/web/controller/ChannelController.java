@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ua.com.alevel.facade.ChannelFacade;
 import ua.com.alevel.facade.UserFacade;
 import ua.com.alevel.web.dto.response.ChannelResponseDto;
-import ua.com.alevel.web.rest.ChannelRestController;
 
 @Controller
 @RequestMapping("/channel")
@@ -28,7 +27,7 @@ public class ChannelController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/createChannel";
@@ -41,7 +40,7 @@ public class ChannelController {
             ChannelResponseDto channelResponseDto = channelFacade.findByUser(authentication.getName());
             model.addAttribute("channel", channelResponseDto);
             model.addAttribute("isLogin", true);
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/updateChannel";

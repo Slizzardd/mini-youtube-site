@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ua.com.alevel.facade.VideoFacade;
 import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.persistence.entity.video.Video;
+import ua.com.alevel.properties.StaticMainProperties;
 import ua.com.alevel.service.HelpService;
 import ua.com.alevel.service.UserService;
 import ua.com.alevel.service.VideoService;
@@ -13,6 +14,7 @@ import ua.com.alevel.web.dto.request.VideoRequestDto;
 import ua.com.alevel.web.dto.response.VideoResponseDto;
 
 import java.io.File;
+import java.util.Objects;
 
 @Service
 public class VideoFacadeImpl implements VideoFacade {
@@ -31,17 +33,35 @@ public class VideoFacadeImpl implements VideoFacade {
     public void create(VideoRequestDto videoRequestDto) {
         User user = userService.findByEmail(videoRequestDto.getUserEmail());
         Video video = new Video();
-        video.setDescription(videoRequestDto.getDescriptionVideo());
-        video.setTags(videoRequestDto.getTagsVideo());
-        video.setTitle(videoRequestDto.getTitle());
-//      @TODO add VideoRenderUtil
+        setMainVideoInformation(video, videoRequestDto);
         video.setPathToVideo(VideoSavingUtil.writeVideoToFilesAndGetPath(
                 videoRequestDto.getVideo(), user.getId(), videoService.getLastIndex()));
-        video.setPathToAvatar(AvatarForVideoRenderUtil.getImageAndReturnPathToNewAvatar(
-                videoRequestDto.getAvatarForVideo(), user.getId(), videoService.getLastIndex()
-        ));
+        if (!availabilityAvatar(videoRequestDto)) {
+            video.setPathToAvatar(StaticMainProperties.PATH_TO_BASE_AVATAR);
+        } else {
+            video.setPathToAvatar(AvatarForVideoRenderUtil.getImageAndReturnPathToNewAvatar(
+                    videoRequestDto.getAvatarForVideo(), user.getId(), videoService.getLastIndex()
+            ));
+        }
         video.setChannel(user.getChannel());
         videoService.create(video);
+    }
+
+    @Override
+    public void update(Long id, VideoRequestDto videoRequestDto) {
+        Video video = videoService.findById(id);
+        setMainVideoInformation(video, videoRequestDto);
+        if (!Objects.equals(video.getPathToAvatar(), StaticMainProperties.PATH_TO_BASE_AVATAR)) {
+            deletingOldAvatar(video.getPathToAvatar());
+        }
+        if (availabilityAvatar(videoRequestDto)) {
+            video.setPathToAvatar(AvatarForVideoRenderUtil.getImageAndReturnPathToNewAvatar(
+                    videoRequestDto.getAvatarForVideo(),
+                    userService.findByEmail(videoRequestDto.getUserEmail()).getId(),
+                    video.getId()
+            ));
+        }
+
     }
 
     @Override
@@ -50,21 +70,21 @@ public class VideoFacadeImpl implements VideoFacade {
     }
 
     @Override
-    public void update(Long id, VideoRequestDto videoRequestDto) {
-        Video video = videoService.findById(id);
+    public VideoResponseDto findById(Long id) {
+        return new VideoResponseDto(videoService.findById(id));
+    }
+
+    private void deletingOldAvatar(String pathToAvatar) {
+        helpService.recursiveDelete(new File(pathToAvatar));
+    }
+
+    private void setMainVideoInformation(Video video, VideoRequestDto videoRequestDto) {
         video.setTitle(videoRequestDto.getTitle());
         video.setDescription(videoRequestDto.getDescriptionVideo());
         video.setTags(videoRequestDto.getTagsVideo());
-        helpService.recursiveDelete(new File(video.getPathToAvatar()));
-        video.setPathToAvatar(AvatarForVideoRenderUtil.getImageAndReturnPathToNewAvatar(
-                videoRequestDto.getAvatarForVideo(),
-                userService.findByEmail(videoRequestDto.getUserEmail()).getId(),
-                video.getId()
-        ));
     }
 
-    @Override
-    public VideoResponseDto findById(Long id) {
-        return new VideoResponseDto(videoService.findById(id));
+    private boolean availabilityAvatar(VideoRequestDto videoRequestDto){
+        return !videoRequestDto.getAvatarForVideo().isEmpty();
     }
 }

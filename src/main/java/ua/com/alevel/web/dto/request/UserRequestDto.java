@@ -1,6 +1,6 @@
 package ua.com.alevel.web.dto.request;
 
-public class UserRequestDto extends RequestDto{
+public class UserRequestDto extends RequestDto {
 
     private String email;
     private String login;

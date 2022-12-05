@@ -24,7 +24,7 @@ public class MainController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/index";

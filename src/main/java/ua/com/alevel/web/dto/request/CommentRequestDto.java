@@ -1,6 +1,6 @@
 package ua.com.alevel.web.dto.request;
 
-public class CommentRequestDto extends RequestDto{
+public class CommentRequestDto extends RequestDto {
 
     private String text;
     private Long idVideo;

@@ -4,7 +4,7 @@ import ua.com.alevel.persistence.entity.channel.User;
 import ua.com.alevel.persistence.type.Role;
 import ua.com.alevel.persistence.type.Status;
 
-public class UserResponseDto extends ResponseDto{
+public class UserResponseDto extends ResponseDto {
     private String email;
     private String login;
     private Status status;

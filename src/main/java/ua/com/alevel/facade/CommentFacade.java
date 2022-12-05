@@ -7,9 +7,9 @@ public interface CommentFacade extends BaseFacade<CommentRequestDto, CommentResp
 
     void create(CommentRequestDto commentRequestDto);
 
-    void delete(Long id);
-
     void update(Long id, CommentRequestDto commentRequestDto);
+
+    void delete(Long id);
 
     CommentResponseDto findById(Long id);
 }

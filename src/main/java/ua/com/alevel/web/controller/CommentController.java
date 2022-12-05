@@ -23,7 +23,7 @@ public class CommentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/createComment";
@@ -35,7 +35,7 @@ public class CommentController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             model.addAttribute("isLogin", true);
             model.addAttribute("comment", commentFacade.findById(1L));
-        }else{
+        } else {
             model.addAttribute("isLogin", false);
         }
         return "/updateComment";

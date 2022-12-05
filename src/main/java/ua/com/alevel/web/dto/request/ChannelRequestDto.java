@@ -1,9 +1,8 @@
 package ua.com.alevel.web.dto.request;
 
 import org.springframework.web.multipart.MultipartFile;
-import ua.com.alevel.persistence.entity.channel.Channel;
 
-public class ChannelRequestDto extends RequestDto{
+public class ChannelRequestDto extends RequestDto {
 
     private String channelName;
     private Long id;
