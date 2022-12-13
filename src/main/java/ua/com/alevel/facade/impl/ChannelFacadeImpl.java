@@ -94,7 +94,7 @@ public class ChannelFacadeImpl implements ChannelFacade {
         if (ObjectUtils.isNotEmpty(channel)) {
             return new ChannelResponseDto(channel);
         } else {
-            throw new EntityNotFoundException("This entity is not found");
+            return null;
         }
     }
 
